@@ -1,4 +1,4 @@
-Robot Car - A Simple Arduino UNO R4 WIFI BLE Contolled Robot Car.
+RoboTuni- A Simple Arduino UNO R4 WIFI BLE Contolled Robot Car.
 
 BOM:
 Arduino Uno R4 WiFi https://it.aliexpress.com/item/1005007078248343.html 
