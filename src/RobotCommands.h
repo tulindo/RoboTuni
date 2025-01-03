@@ -1,0 +1,29 @@
+#ifndef _ROBOT_COMMANDS.H
+#define _ROBOT_COMMANDS._H
+
+#include <Arduino.h>
+
+enum RobotCommandEnum : byte {  
+    STOP = 0, 
+    MOVE_FORWARD = 1, 
+    MOVE_BACKWARD = 2,
+    TURN_RIGHT = 4,
+    TURN_LEFT = 8,
+    MOVE_FORWARD_RIGHT = 5,
+    MOVE_FORWARD_LEFT = 9,
+    MOVE_BACKWARD_RIGHT = 6,
+    MOVE_BACKWARD_LEFT = 10,
+    ROTATE_RIGHT = 20,
+    ROTATE_LEFT = 24,
+    U_TURN_RIGHT = 34,
+    U_TURN_LEFT = 38,
+    TURN_REVERSE_LEFT = 50,
+    TURN_REVERSE_RIGHT = 60,
+    MOVE_FORWARD_SLOW = 200,
+    AUTO_DRIVE = 64,
+    EMERGENCY_STOP = 100,
+    UNKNOWN_COMMAND = 255
+};
+
+#endif
+
