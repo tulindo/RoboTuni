@@ -17,6 +17,7 @@ class DistanceSensor {
     unsigned int pulseTime;
 
     //Variables for the non blocking state machine calculation
+    bool isSinglePin = false;
     unsigned long previousMillis = 0; 
     unsigned long trigStartTime = 0;  //Time when triggering the pulse Tempo in cui è stato attivato il pin TRIG
     //Possible states of the state machine

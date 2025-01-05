@@ -42,9 +42,9 @@ AutoDriveController autoDriveController(&motorsController, &servoController);
 
 #include <Ticker.h>
 
-//Front Distance Sensor
+//Front Distance Sensor (Trigger and Echo pin are shared)
 #include "DistanceSensor.h"
-#define TRIGGER_PIN 4
+#define TRIGGER_PIN 2
 #define ECHO_PIN 2
 #define MAX_DISTANCE 100
 #define SAFE_DISTANCE_CM 20
@@ -70,6 +70,7 @@ InfraredSensors rearSensors(PIN_LEFT_REAR_SENSOR, PIN_RIGHT_REAR_SENSOR);
 
 //Buzzer
 #define PIN_BUZZER 6
+#define BUZZ_FREQUENCY 440
 
 #include "Buzzer.h"
 
@@ -82,7 +83,7 @@ Buzzer buzzer(PIN_BUZZER);
 BluetoothLEManager bleManager;
 
 void danger() {
-  buzzer.buzz(440);
+  buzzer.buzz(BUZZ_FREQUENCY);
   matrix.showCommand(EMERGENCY_STOP);
   motorsController.emergencyStop();
   if (autoDriveController.getIsEnabled()) {
@@ -111,7 +112,7 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
     }
   } else {
     //Signal that the received command is unsafe
-    buzzer.buzz(440);
+    buzzer.buzz(BUZZ_FREQUENCY);
     matrix.showCommand(EMERGENCY_STOP);
   }
 }
@@ -237,7 +238,7 @@ void setup() {
   //Clear the matrix
   matrix.showImage(IMG_CLEAR);
   //Buzz to signal that restart is completed
-  buzzer.buzz(440);
+  buzzer.buzz(BUZZ_FREQUENCY);
 }
 
 void loop() {  

@@ -5,6 +5,7 @@ DistanceSensor::DistanceSensor(int trigPin, int echoPin, int maxDistance) :
   echoPin(echoPin),
   maxDistance(maxDistance),
   sonar(trigPin, echoPin, maxDistance) {
+    isSinglePin = trigPin == echoPin;
 }
 
 float DistanceSensor::getDistance() {
@@ -28,6 +29,9 @@ void DistanceSensor::distanceStateMachine(unsigned long interval) {
 
     //Change state and register trigger start time.
     stato = TRIGGER_HIGH;
+    if (isSinglePin) {
+      pinMode(trigPin, OUTPUT);
+    }
     trigStartTime = micros();
   }
 
@@ -35,9 +39,12 @@ void DistanceSensor::distanceStateMachine(unsigned long interval) {
   if (stato == TRIGGER_HIGH) {
     digitalWrite(trigPin, HIGH);
     if (micros() - trigStartTime >= 10) {
-      //10 microseconda passed. change state and deactivate trigger
+      //10 microseconds passed. change state and deactivate trigger
       digitalWrite(trigPin, LOW);
       stato = WAITING_FOR_ECHO;
+      if (isSinglePin) {
+        pinMode(echoPin, OUTPUT);
+      }
       echoStarted = false; // Echo has not yet been sent.
     }
   }
