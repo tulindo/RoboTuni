@@ -1,9 +1,14 @@
 #include "ServoController.h"
 
+//Initialize static variables (otherwise linker will fail)
+ServoController* ServoController::instance = nullptr;
+
 ServoController::ServoController(int servoPin, int timerDelay) : 
   servoPin(servoPin),
   servo(),
-  timer([this]() { onTick(); }, timerDelay, 0, MILLIS) {
+  timer([this]() { onTick(); }, timerDelay, 0, MILLIS),
+  onTargetReachedCallback(nullptr) {
+    instance = this; 
     targetReachingSteps = TARGET_REACHING_STEPS;
 }
 
@@ -26,8 +31,11 @@ void ServoController::onTick() {
       min(targetPosition - servoPosition, targetReachingSteps) : 
         max(targetPosition - servoPosition, -targetReachingSteps);
     if (step == 0) {
+      //We reached the sedired target
       isTargetReached = true;
-      //TODO: Notify Callback
+      if (instance->onTargetReachedCallback) {
+        instance->onTargetReachedCallback(servoTarget);
+      }
     }
   } else if (isOscillation) {
     //Implement Oscillation around the targetPosition
@@ -84,4 +92,9 @@ void ServoController::setMode(ServoTargetEnum target, bool oscillation) {
   // SerialPrint(targetPosition);
   // SerialPrint(" Oscillation: ");
   // SerialPrintln(oscillation);
+}
+
+//Set the user callback to be called when a command has been received
+void ServoController::setOnTargetReachedCallback(void (*callback)(ServoTargetEnum)) {
+  onTargetReachedCallback = callback;
 }

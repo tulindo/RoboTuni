@@ -25,16 +25,31 @@ class ServoController {
     //Servo Pin
     const int servoPin; // Pin Servo
 
+    //Internal Timer
     Ticker timer;
+    void onTick();
+    
+    //The servo driver
     Servo servo;
+
+    //The desired target
     ServoTargetEnum servoTarget;
+    //True if oscillation is requested after reaching target
     bool isOscillation;
+    //Current Servo position
     byte servoPosition;
+    //The desired target position
     byte targetPosition;
+
     bool isIncreasingPosition;
     bool isTargetReached;
+    
+    //Servo Steps to move when reaching target
     int targetReachingSteps;
-    void onTick();
+
+    //Pointer for the callback
+    void (*onTargetReachedCallback)(ServoTargetEnum); 
+    static ServoController* instance;
 
   public:
 
@@ -44,10 +59,14 @@ class ServoController {
     //Initialize servo
     void begin();
 
+    //Set Servo mode
     void setMode(ServoTargetEnum target, bool oscillation = false);
 
     //Update timer
     void update();
+
+    //Set the callback that will be called when the servo reached the desired target
+    void setOnTargetReachedCallback(void (*callback)(ServoTargetEnum));
 };
 
 #endif
