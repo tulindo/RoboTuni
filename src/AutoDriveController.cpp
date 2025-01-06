@@ -61,7 +61,11 @@ void AutoDriveController::onTick() {
       SerialPrintln("U-Turn");
       //Finally do a U Turn 
       timer.interval(5000);
-      motorsController->execute(random(2) == 0 ? U_TURN_LEFT : U_TURN_RIGHT );
+      short delta = 0;
+      if (dangerRecoveryMode == RANDOM_ROTATION_RECOVERY) {
+        delta = random(-45, 45);
+      }
+      motorsController->execute(random(2) == 0 ? U_TURN_LEFT : U_TURN_RIGHT, delta );
       //Back to normal drive
       state = NormalDrive;
   }

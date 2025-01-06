@@ -38,7 +38,7 @@ ServoController servoController(SERVO_PIN, TIMER_DELAY);
 
 //Auto Drive controller
 #include <AutoDriveController.h>
-AutoDriveController autoDriveController(&motorsController, &servoController);
+AutoDriveController autoDriveController(&motorsController, &servoController, RANDOM_ROTATION_RECOVERY);
 
 #include <Ticker.h>
 

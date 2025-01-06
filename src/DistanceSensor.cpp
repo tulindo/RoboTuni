@@ -14,8 +14,8 @@ float DistanceSensor::getDistance() {
   //NewPing library returns 0 when the measured distance is above the configured max distance
   //so, if the median is 0 return maxDistance otherwise convert the delay in cm.
   float distance = pulseTime == 0 ? (float)maxDistance : pulseTime * 0.0343 / 2;
-  SerialPrint("Distance: ");
-  SerialPrintln(distance);
+  // SerialPrint("Distance: ");
+  // SerialPrintln(distance);
   return distance;
 }
 

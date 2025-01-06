@@ -58,7 +58,9 @@ class MotorsController {
     void emergencyStop();
 
     //This method drive the motors using the timing
-    void execute(RobotCommandEnum cmd);
+    //Every command can have an optional parameter
+    void execute(RobotCommandEnum cmd, short parameter = 0);
+
     //Main timer function
     void update();
 

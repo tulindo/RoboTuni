@@ -170,9 +170,14 @@ void MotorsController::emergencyStop() {
   queueSpeeds.enqueue(QueueData(STOP), 20);
 }
 
-void MotorsController::execute(RobotCommandEnum cmd) {
+void MotorsController::execute(RobotCommandEnum cmd, short parameter) {
   SerialPrint("MotorsController Execute: ");
   SerialPrint(cmd);
+  if (parameter != 0) {
+    SerialPrint(" (");
+    SerialPrint(parameter);
+    SerialPrint(")");
+  }
   switch (cmd) {
     case STOP:
       SerialPrintln(" STOP");
@@ -231,13 +236,15 @@ void MotorsController::execute(RobotCommandEnum cmd) {
     case U_TURN_LEFT:
       SerialPrintln(" U_TURN_LEFT");
       //Rotate for U_TURN_TICKS motor ticks
-      setMotorsTargetSpeed(U_TURN_LEFT, -safeSlowSpeed, safeSlowSpeed, U_TURN_TICKS);
+      //For U_TURN commands the optional parameter indicates a delta % in number of ticks
+      setMotorsTargetSpeed(U_TURN_LEFT, -safeSlowSpeed, safeSlowSpeed, U_TURN_TICKS + U_TURN_TICKS * parameter / 100);
       setMotorsTargetSpeed(MOVE_FORWARD_SLOW, safeSlowSpeed, safeSlowSpeed);
       break;
     case U_TURN_RIGHT:
       SerialPrintln(" U_TURN_RIGHT");
       //Rotate for U_TURN_TICKS motor ticks
-      setMotorsTargetSpeed(U_TURN_RIGHT, safeSlowSpeed, -safeSlowSpeed, U_TURN_TICKS);
+      //For U_TURN commands the optional parameter indicates a delta % in number of ticks
+      setMotorsTargetSpeed(U_TURN_RIGHT, safeSlowSpeed, -safeSlowSpeed, U_TURN_TICKS + U_TURN_TICKS * parameter / 100);
       setMotorsTargetSpeed(MOVE_FORWARD_SLOW, safeSlowSpeed, safeSlowSpeed);
       break;
   }
