@@ -2,12 +2,11 @@
 
 AutoDriveController::AutoDriveController(
     MotorsController* motorsController, 
-    ServoController* servoController,
-    DangerRecoveryModeEnum dangerRecoveryMode) :
+    ServoController* servoController) :
   motorsController(motorsController),
   servoController(servoController),
-  dangerRecoveryMode(dangerRecoveryMode),
   timer([this]() { onTick(); }, 1000, 0, MILLIS) {
+    dangerRecoveryMode = STANDARD_RECOVERY,
     isEnabled = false;
     commands[0] = { MOVE_FORWARD, 30, 2000, 4000 };
     commands[1] = { TURN_LEFT, 15, 1000, 2000 };
@@ -73,8 +72,10 @@ void AutoDriveController::onTick() {
 }
 
 
-void AutoDriveController::start() {
+void AutoDriveController::start(DangerRecoveryModeEnum mode) {
     randomSeed(micros());
+    //Set the recovery mode
+    dangerRecoveryMode = mode;
     isEnabled = true;
     //Start the timer
     state = NormalDrive;
@@ -97,7 +98,7 @@ void AutoDriveController::update() {
   }
 }
 
-void AutoDriveController::setDangetMode() {
+void AutoDriveController::setDangerMode() {
   state = Stopped;
   onTick();
 }

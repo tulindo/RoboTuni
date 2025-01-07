@@ -38,7 +38,7 @@ ServoController servoController(SERVO_PIN, TIMER_DELAY);
 
 //Auto Drive controller
 #include <AutoDriveController.h>
-AutoDriveController autoDriveController(&motorsController, &servoController, RANDOM_ROTATION_RECOVERY);
+AutoDriveController autoDriveController(&motorsController, &servoController);
 
 #include <Ticker.h>
 
@@ -87,7 +87,7 @@ void danger() {
   matrix.showCommand(EMERGENCY_STOP);
   motorsController.emergencyStop();
   if (autoDriveController.getIsEnabled()) {
-    autoDriveController.setDangetMode();
+    autoDriveController.setDangerMode();
   }
 }
 
@@ -101,7 +101,7 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
     matrix.showCommand(command);
     if (command == AUTO_DRIVE) {
       //Start Automatic drive mode
-      autoDriveController.start();
+      autoDriveController.start(RANDOM_ROTATION_RECOVERY);
     } else {
       //Stop automatic drive mode if it was enabled
       if (autoDriveController.getIsEnabled()) {
