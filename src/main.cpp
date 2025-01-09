@@ -93,15 +93,15 @@ void danger() {
 
 //Callback called when a command from BLE is received
 void myCommandReceivedCallback(RobotCommandEnum command) {
-  SerialPrint("Received command: ");
-  SerialPrintln(command);
+  // SerialPrint("Received command: ");
+  // SerialPrintln(command);
   if ((!isUnsafeDistanceFront || motorsController.isSafeCommandFront(command)) &&
       (!isUnsafeDistanceBack || motorsController.isSafeCommandBack(command))) {
     //It's safe to execute the received command
     matrix.showCommand(command);
     if (command == AUTO_DRIVE) {
       //Start Automatic drive mode
-      autoDriveController.start(RANDOM_ROTATION_RECOVERY);
+      autoDriveController.start(SERVO_BASED_RECOVERY);
     } else {
       //Stop automatic drive mode if it was enabled
       if (autoDriveController.getIsEnabled()) {
@@ -119,8 +119,8 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
 
 //Callback called when a motor command is Executed
 void myCommandExecutedCallback(RobotCommandEnum command) {
-  SerialPrint("Executed command: ");
-  SerialPrintln(command);
+  // SerialPrint("Executed command: ");
+  // SerialPrintln(command);
   //Handle Oscillation Servo Controller
   switch (command) {
     case MOVE_FORWARD:
@@ -232,7 +232,7 @@ void setup() {
   //Start timer for soft motor command control
   timerMotorCommand.start();
 
-  //Inizialize Servo Controllwe 
+  //Inizialize Servo Controller 
   servoController.begin();
 
   //Clear the matrix

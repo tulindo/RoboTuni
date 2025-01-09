@@ -31,7 +31,7 @@ void ServoController::onTick() {
       min(targetPosition - servoPosition, targetReachingSteps) : 
         max(targetPosition - servoPosition, -targetReachingSteps);
     if (step == 0) {
-      //We reached the sedired target
+      //We reached the desired target
       isTargetReached = true;
       if (instance->onTargetReachedCallback) {
         instance->onTargetReachedCallback(servoTarget);
@@ -61,23 +61,28 @@ void ServoController::update() {
 }
 
 void ServoController::setMode(ServoTargetEnum target, bool oscillation) {
-  // SerialPrint("Setting Mode ");
+  SerialPrint("Servo Setting Mode ");
   servoTarget = target;
   //Set target position based on desired target
   switch (servoTarget) {
     case LOOK_FORWARD:
+      SerialPrint("LOOK_FORWARD");
       targetPosition = DEFAULT_SERVO_POSITION;
       break;
     case LOOK_FORWARD_LEFT:
+      SerialPrint("LOOK_FORWARD_LEFT");
       targetPosition = DEFAULT_SERVO_POSITION + FORWARD_SIDE_OFFSET;
       break;
     case LOOK_FORWARD_RIGHT:
+      SerialPrint("LOOK_FORWARD_RIGHT");
       targetPosition = DEFAULT_SERVO_POSITION - FORWARD_SIDE_OFFSET;
       break;
     case LOOK_LEFT:
+      SerialPrint("LOOK_LEFT");
       targetPosition = DEFAULT_SERVO_POSITION + LOOK_SIDE_OFFSET;
       break;
     case LOOK_RIGHT:
+      SerialPrint("LOOK_RIGHT");
       targetPosition = DEFAULT_SERVO_POSITION - LOOK_SIDE_OFFSET;
       break;
   }
@@ -87,11 +92,10 @@ void ServoController::setMode(ServoTargetEnum target, bool oscillation) {
   isTargetReached = false;
   //Tell if, after reaching the target, there will be some oscillation.
   isOscillation = oscillation;
-  // SerialPrint(mode);
-  // SerialPrint(" Target: ");
-  // SerialPrint(targetPosition);
-  // SerialPrint(" Oscillation: ");
-  // SerialPrintln(oscillation);
+  SerialPrint(" Target: ");
+  SerialPrint(targetPosition);
+  SerialPrint(" Oscillation: ");
+  SerialPrintln(oscillation);
 }
 
 //Set the user callback to be called when a command has been received

@@ -33,7 +33,7 @@ enum DangerRecoveryModeEnum : byte {
   STANDARD_RECOVERY = 0,  
   //Random Rotation: Like the standard mode but instead of a 180 degrees rotation do a random rotation (180 +/- 45%)
   RANDOM_ROTATION_RECOVERY = 1,
-  //Servo Based Recovery: Goes backward for 1 second and stops again. Then looks left and right to ged the best direction to turn. Than turns on that direction 
+  //Servo Based Recovery: Goes backward for half a second and stops again. Then looks left and right to ged the best direction to turn. Than turns on that direction 
   SERVO_BASED_RECOVERY = 2,
 };
 

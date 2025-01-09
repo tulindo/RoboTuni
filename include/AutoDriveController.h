@@ -15,7 +15,6 @@ class AutoDriveController {
     MotorsController* motorsController = nullptr;
     ServoController* servoController = nullptr;
     bool isEnabled;
-
     //This enum defines the various states used by the stata machine
     enum AutoDriveStateEnum : byte {
       //Normal drive mode.
@@ -34,8 +33,23 @@ class AutoDriveController {
       Turn
     } state = NormalDrive;
 
+    //this enum defines substates used to handle servo in servo based recovery
+    enum ServoStateEnum {
+      //The servo is handled by the motors
+      MotorHandled,
+      //The servo looks fixed forward 
+      Forward,
+      //The servo is looking left or right
+      Looking,
+      //The servo finished looking
+      Looked,
+      //The servo is resuming normal position
+      Resuming,
+      //Resuming position completed
+      Resumed,
+    } servoState = MotorHandled;
+
     DangerRecoveryModeEnum dangerRecoveryMode;
-    
     struct CommandData {
       RobotCommandEnum command; 
       byte percentage;
@@ -46,6 +60,8 @@ class AutoDriveController {
     Ticker timer;
     void onTick();
 
+    static  AutoDriveController* instance;
+    void onServoTargetReached(ServoTargetEnum target);
   public:
     //Constructor
     explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController);
@@ -59,6 +75,8 @@ class AutoDriveController {
     void update();
 
     void setDangerMode();
+
+    static void myServoTargetReceivedCallback(ServoTargetEnum target); 
 };
 
 #endif
