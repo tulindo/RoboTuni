@@ -5,6 +5,7 @@
 
 #include "MotorsController.h"
 #include "ServoController.h"
+#include "DistanceSensor.h"
 #include "RobotCommands.h"
 
 #include <Arduino.h>
@@ -14,6 +15,8 @@ class AutoDriveController {
   private:
     MotorsController* motorsController = nullptr;
     ServoController* servoController = nullptr;
+    DistanceSensor* distanceSensor = nullptr;
+
     bool isEnabled;
     //This enum defines the various states used by the stata machine
     enum AutoDriveStateEnum : byte {
@@ -60,11 +63,17 @@ class AutoDriveController {
     Ticker timer;
     void onTick();
 
-    static  AutoDriveController* instance;
+    static AutoDriveController* instance;
     void onServoTargetReached(ServoTargetEnum target);
+
+    float minLeftDistance;
+    float maxLeftDistance;
+    float minRightDistance;
+    float maxRightDistance;
+    
   public:
     //Constructor
-    explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController);
+    explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController, DistanceSensor* distanceSensor);
 
     void start(DangerRecoveryModeEnum mode);
 

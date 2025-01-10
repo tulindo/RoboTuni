@@ -26,10 +26,13 @@ class DistanceSensor {
     unsigned long startEchoTime = 0;
     unsigned long endEchoTime = 0;
     bool echoStarted = false;
+    bool isAnalyzingDistance = false;
+    unsigned int currentMinPulseTime;
+    unsigned int currentMaxPulseTime;
 
     //NewPing sonar (used by the blocking calculation)
     NewPing sonar;
-
+    float inline convertTimeToDistance(unsigned int time);
   public:
 
     //Constructor
@@ -43,6 +46,13 @@ class DistanceSensor {
 
     //Calculate distance using a blocking NewPing call 
     void distanceBlocking();
+
+    //Methods for distance Analysis
+    void startDistanceAnalysis();
+    void stopDistanceAnalysis();
+
+    float getMaxDistance();
+    float getMinDistance();
 };
 
 #endif

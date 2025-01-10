@@ -280,9 +280,7 @@ bool MotorsController::isSafeCommandFront(RobotCommandEnum cmd) {
     cmd != MOVE_FORWARD_LEFT &&
     cmd != MOVE_FORWARD_RIGHT &&
     cmd != TURN_LEFT && 
-    cmd != TURN_RIGHT &&
-    cmd != U_TURN_LEFT &&
-    cmd != U_TURN_RIGHT;
+    cmd != TURN_RIGHT;
 }
 
 bool MotorsController::isSafeCommandBack(RobotCommandEnum cmd) {

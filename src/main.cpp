@@ -36,10 +36,6 @@ MotorsController motorsController = MotorsController(
 
 ServoController servoController(SERVO_PIN, TIMER_DELAY);
 
-//Auto Drive controller
-#include <AutoDriveController.h>
-AutoDriveController autoDriveController(&motorsController, &servoController);
-
 #include <Ticker.h>
 
 //Front Distance Sensor (Trigger and Echo pin are shared)
@@ -67,6 +63,10 @@ Ticker timerMotorCommand(
 bool isUnsafeDistanceBack = false;
 
 InfraredSensors rearSensors(PIN_LEFT_REAR_SENSOR, PIN_RIGHT_REAR_SENSOR);
+
+//Auto Drive controller
+#include <AutoDriveController.h>
+AutoDriveController autoDriveController(&motorsController, &servoController, &distanceSensor);
 
 //Buzzer
 #define PIN_BUZZER 6

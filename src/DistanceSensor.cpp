@@ -1,5 +1,7 @@
 #include "DistanceSensor.h"
 
+#define MAX_PULSE_TIME 999999999
+
 DistanceSensor::DistanceSensor(int trigPin, int echoPin, int maxDistance) : 
   trigPin(trigPin), 
   echoPin(echoPin),
@@ -8,12 +10,14 @@ DistanceSensor::DistanceSensor(int trigPin, int echoPin, int maxDistance) :
     isSinglePin = trigPin == echoPin;
 }
 
+float DistanceSensor::convertTimeToDistance(unsigned int time) {
+  return pulseTime == MAX_PULSE_TIME ? (float)maxDistance : pulseTime * 0.0343 / 2;
+}
+
 float DistanceSensor::getDistance() {
   //Convert pulseTime to cm.
   //SerialPrint("Measured distance in cm: ");
-  //NewPing library returns 0 when the measured distance is above the configured max distance
-  //so, if the median is 0 return maxDistance otherwise convert the delay in cm.
-  float distance = pulseTime == 0 ? (float)maxDistance : pulseTime * 0.0343 / 2;
+  float distance = convertTimeToDistance(pulseTime);
   // SerialPrint("Distance: ");
   // SerialPrintln(distance);
   return distance;
@@ -77,4 +81,37 @@ void DistanceSensor::distanceStateMachine(unsigned long interval) {
 void DistanceSensor::distanceBlocking() {
   //Calculate pulseTime using the NewPing Library
   pulseTime = sonar.ping();
+  if (pulseTime == 0) {
+    //NewPing library returns 0 when the measured distance is above the configured max distance
+    //so, if this time is 0 return an invalid value.
+    pulseTime = MAX_PULSE_TIME;
+  }
+  if (isAnalyzingDistance) {
+    SerialPrint("Detected pulseTime: ");
+    SerialPrint(pulseTime);
+  }
+  if (isAnalyzingDistance && pulseTime > currentMaxPulseTime) {
+    currentMaxPulseTime = pulseTime;
+  }
+  if (isAnalyzingDistance && pulseTime < currentMinPulseTime) {
+    currentMinPulseTime = pulseTime;
+  }
+  SerialPrintln();
+}
+
+void DistanceSensor::startDistanceAnalysis() {
+  currentMinPulseTime = currentMaxPulseTime = pulseTime;
+  isAnalyzingDistance = true; 
+} 
+
+void DistanceSensor::stopDistanceAnalysis() {
+  isAnalyzingDistance = false;
+}
+
+float DistanceSensor::getMinDistance() {
+  return convertTimeToDistance(currentMinPulseTime);
+}
+
+float DistanceSensor::getMaxDistance() {
+  return convertTimeToDistance(currentMaxPulseTime);
 }
