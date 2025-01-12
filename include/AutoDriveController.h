@@ -70,7 +70,12 @@ class AutoDriveController {
     float maxLeftDistance;
     float minRightDistance;
     float maxRightDistance;
-    
+
+    //Helper methods for the onTick
+    void onTickNormalDrive();
+    void onTickUTurn();
+    void onTickLookSide(bool isRight);
+
   public:
     //Constructor
     explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController, DistanceSensor* distanceSensor);

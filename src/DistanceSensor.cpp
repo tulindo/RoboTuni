@@ -11,7 +11,7 @@ DistanceSensor::DistanceSensor(int trigPin, int echoPin, int maxDistance) :
 }
 
 float DistanceSensor::convertTimeToDistance(unsigned int time) {
-  return pulseTime == MAX_PULSE_TIME ? (float)maxDistance : pulseTime * 0.0343 / 2;
+  return pulseTime == MAX_PULSE_TIME ? (float)maxDistance : time * 0.0343 / 2;
 }
 
 float DistanceSensor::getDistance() {
@@ -89,6 +89,10 @@ void DistanceSensor::distanceBlocking() {
   if (isAnalyzingDistance) {
     SerialPrint("Detected pulseTime: ");
     SerialPrint(pulseTime);
+    SerialPrint(" Current Min: ");
+    SerialPrint(currentMinPulseTime);
+    SerialPrint(" Current Max: ");
+    SerialPrintln(currentMaxPulseTime);
   }
   if (isAnalyzingDistance && pulseTime > currentMaxPulseTime) {
     currentMaxPulseTime = pulseTime;
@@ -96,15 +100,16 @@ void DistanceSensor::distanceBlocking() {
   if (isAnalyzingDistance && pulseTime < currentMinPulseTime) {
     currentMinPulseTime = pulseTime;
   }
-  SerialPrintln();
 }
 
 void DistanceSensor::startDistanceAnalysis() {
+  SerialPrintln("Starting Distance Analysis");
   currentMinPulseTime = currentMaxPulseTime = pulseTime;
   isAnalyzingDistance = true; 
 } 
 
 void DistanceSensor::stopDistanceAnalysis() {
+  SerialPrintln("Stopping Distance Analysis");
   isAnalyzingDistance = false;
 }
 
