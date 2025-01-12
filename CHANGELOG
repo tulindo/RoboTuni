@@ -1,3 +1,8 @@
 # ChangeLog
 
 0.1 - First version of the robot
+0.2 - Some improvements
+
+- SinglePin mode for HC-SR04
+- New AutoDrive RandomRotation recovery mode
+- New AutoDrive servoBased recovery mode
