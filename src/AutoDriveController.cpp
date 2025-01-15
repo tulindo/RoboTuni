@@ -145,14 +145,13 @@ void AutoDriveController::onTickLookSide(bool isRight) {
 
 void AutoDriveController::onTick() {
   timer.stop();
-  SerialPrint("OnTick State");
+  SerialPrint("OnTick State ");
+  SerialPrintln(enumToString(state));
   switch (state) {
     case NormalDrive:
-      SerialPrintln("NormalDrive ");
       onTickNormalDrive();
       break;
     case Stopped:
-      SerialPrintln("Stopped");
       //This state is fired when robot is in a dangerous situation
       //Don't move for 1 second
       timer.interval(1000);
@@ -162,22 +161,18 @@ void AutoDriveController::onTick() {
       servoState = Forward;
       break;
     case Backward:
-      SerialPrintln("Backward");
       //Move backward for 1 second (200ms if ServoBased Recovery)
       timer.interval(dangerRecoveryMode == SERVO_BASED_RECOVERY ? 200 : 1000);
       motorsController->execute(MOVE_BACKWARD);
       state = UTurn;      
       break;
     case UTurn:
-      SerialPrintln("U-Turn");
       onTickUTurn();
       break;
     case LookRight:
-      SerialPrint("LookRight");
       onTickLookSide(true);
       break;
     case LookLeft:
-      SerialPrint("LookLeft");
       onTickLookSide(false);
       break;
   }
@@ -189,7 +184,7 @@ void AutoDriveController::onServoTargetReached(ServoTargetEnum target) {
   SerialPrint("Servo AutoDrive callback Target (");
   SerialPrint(target);
   SerialPrint(") State (");
-  SerialPrint(state);
+  SerialPrint(enumToString(state));
   SerialPrint(") ServoState (");
   SerialPrint(servoState);
   SerialPrint(") ");

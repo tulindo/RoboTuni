@@ -171,28 +171,26 @@ void MotorsController::emergencyStop() {
 }
 
 void MotorsController::execute(RobotCommandEnum cmd, short parameter) {
-  SerialPrint("MotorsController Execute: ");
-  // SerialPrint(cmd);
+  //SerialPrint("MotorsController Execute: ");
+  // SerialPrint(enumToString(cmd));
   if (parameter != 0) {
     // SerialPrint(" (");
     // SerialPrint(parameter);
-    // SerialPrint(")");
+    // SerialPrintln(")");
+  } else {
+    //SerialPrintln();
   }
   switch (cmd) {
     case STOP:
-      SerialPrintln(" STOP");
       setMotorsTargetSpeed(STOP, 0, 0);
       break;
     case MOVE_FORWARD:
-      SerialPrintln(" MOVE_FORWARD");
       setMotorsTargetSpeed(MOVE_FORWARD, maxSpeed, maxSpeed);
       break;
     case MOVE_BACKWARD:
-      SerialPrintln(" MOVE_BACKWARD");
       setMotorsTargetSpeed(MOVE_BACKWARD, -safeMaxSpeed, -safeMaxSpeed);
       break;
     case TURN_LEFT:
-      SerialPrintln(" TURN_LEFT");
       if (currentCommand == MOVE_BACKWARD || currentCommand == MOVE_BACKWARD_LEFT || currentCommand == MOVE_BACKWARD_RIGHT)
       {
         setMotorsTargetSpeed(TURN_REVERSE_LEFT, 0, -maxSpeed);
@@ -201,7 +199,6 @@ void MotorsController::execute(RobotCommandEnum cmd, short parameter) {
       }
       break;
     case TURN_RIGHT:
-      SerialPrintln(" TURN_RIGHT");
       if (currentCommand == MOVE_BACKWARD || currentCommand == MOVE_BACKWARD_LEFT || currentCommand == MOVE_BACKWARD_RIGHT)
       {
         setMotorsTargetSpeed(TURN_REVERSE_RIGHT, -maxSpeed, 0);
@@ -210,38 +207,30 @@ void MotorsController::execute(RobotCommandEnum cmd, short parameter) {
       }
       break;
     case MOVE_FORWARD_LEFT:
-      SerialPrintln(" MOVE_FORWARD_LEFT");
       setMotorsTargetSpeed(MOVE_FORWARD_LEFT, slowSpeed, maxSpeed);
       break;
     case MOVE_FORWARD_RIGHT:
-      SerialPrintln(" MOVE_FORWARD_RIGHT");
       setMotorsTargetSpeed(MOVE_FORWARD_RIGHT, maxSpeed, slowSpeed);
       break;
     case MOVE_BACKWARD_LEFT:
-      SerialPrintln(" MOVE_BACKWARD_LEFT");
       setMotorsTargetSpeed(MOVE_BACKWARD_LEFT, -safeSlowSpeed, -safeMaxSpeed);
       break;
     case MOVE_BACKWARD_RIGHT:
-      SerialPrintln(" MOVE_BACKWARD_RIGHT");
       setMotorsTargetSpeed(MOVE_BACKWARD_RIGHT, -safeMaxSpeed, -safeSlowSpeed);
       break;
     case ROTATE_LEFT:
-      SerialPrintln(" ROTATE_LEFT");
       setMotorsTargetSpeed(ROTATE_LEFT, -safeMaxSpeed, safeMaxSpeed);
       break;
     case ROTATE_RIGHT:
-      SerialPrintln(" ROTATE_RIGHT");
       setMotorsTargetSpeed(ROTATE_RIGHT, safeMaxSpeed, -safeMaxSpeed);
       break;
     case U_TURN_LEFT:
-      SerialPrintln(" U_TURN_LEFT");
       //Rotate for U_TURN_TICKS motor ticks
       //For U_TURN commands the optional parameter indicates a delta % in number of ticks
       setMotorsTargetSpeed(U_TURN_LEFT, -safeSlowSpeed, safeSlowSpeed, U_TURN_TICKS + U_TURN_TICKS * parameter / 100);
       setMotorsTargetSpeed(MOVE_FORWARD_SLOW, safeSlowSpeed, safeSlowSpeed);
       break;
     case U_TURN_RIGHT:
-      SerialPrintln(" U_TURN_RIGHT");
       //Rotate for U_TURN_TICKS motor ticks
       //For U_TURN commands the optional parameter indicates a delta % in number of ticks
       setMotorsTargetSpeed(U_TURN_RIGHT, safeSlowSpeed, -safeSlowSpeed, U_TURN_TICKS + U_TURN_TICKS * parameter / 100);

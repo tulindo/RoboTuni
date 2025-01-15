@@ -4,7 +4,7 @@
 #include "serial.h"
 
 #include "EEPromConfiguration.h"
-#include "RobotCommands.h"
+#include "RobotEnums.h"
 #include "Queue.h"
 
 #include <Arduino.h>

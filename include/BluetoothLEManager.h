@@ -8,7 +8,7 @@
 
 #include <Arduino.h>
 #include <ArduinoBLE.h>
-#include "RobotCommands.h"
+#include "RobotEnums.h"
 
 class BluetoothLEManager {
   private:

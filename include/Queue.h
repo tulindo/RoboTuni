@@ -2,7 +2,7 @@
 #define QUEUE_H
 
 #include <Arduino.h>
-#include "RobotCommands.h"
+#include "RobotEnums.h"
 #include "serial.h"
 
 struct QueueData {

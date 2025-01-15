@@ -3,23 +3,12 @@
 
 #include <Arduino.h>
 
-#include "RobotCommands.h"
+#include "RobotEnums.h"
 #include <Arduino_LED_Matrix.h>
 
 #include <Ticker.h>
 
 #include "serial.h"
-
-enum ImageEnum : byte {
-  IMG_LOGO_BLE = 200,
-  IMG_LOGO_BLE_DOT = 201,
-  IMG_ERROR = 202,
-  IMG_BATTERY_0 = 203,
-  IMG_BATTERY_30 = 204,
-  IMG_BATTERY_60 = 205,
-  IMG_BATTERY_100 = 206,
-  IMG_CLEAR = 207
-};
 
 class MatrixController : public ArduinoLEDMatrix {
 private:
@@ -44,7 +33,7 @@ public:
   
   void showCommand(RobotCommandEnum command);
 
-  void showImage(ImageEnum image);
+  void showImage(MatrixImageEnum image);
 };
 
 #endif

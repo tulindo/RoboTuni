@@ -6,7 +6,7 @@
 #include "MotorsController.h"
 #include "ServoController.h"
 #include "DistanceSensor.h"
-#include "RobotCommands.h"
+#include "RobotEnums.h"
 
 #include <Arduino.h>
 #include <Ticker.h>
@@ -18,39 +18,10 @@ class AutoDriveController {
     DistanceSensor* distanceSensor = nullptr;
 
     bool isEnabled;
-    //This enum defines the various states used by the stata machine
-    enum AutoDriveStateEnum : byte {
-      //Normal drive mode.
-      NormalDrive,
-      //This is the first state when entered in the recovery mode (i.e. when the setDangerMode method has been called)
-      Stopped,
-      //Move backward
-      Backward,
-      //Do a U-Turn rotation
-      UTurn,
-      //LookLeft to get the maximum distance
-      LookLeft,
-      //Look right to get the maximum distance
-      LookRight,
-      //Turn
-      Turn
-    } state = NormalDrive;
-
-    //this enum defines substates used to handle servo in servo based recovery
-    enum ServoStateEnum {
-      //The servo is handled by the motors
-      MotorHandled,
-      //The servo looks fixed forward 
-      Forward,
-      //The servo is looking left or right
-      Looking,
-      //The servo finished looking
-      Looked,
-      //The servo is resuming normal position
-      Resuming,
-      //Resuming position completed
-      Resumed,
-    } servoState = MotorHandled;
+    //Current state of the controller
+    AutoDriveStateEnum state = NormalDrive;
+    //Curent state of the Servo
+    ServoStateEnum servoState = MotorHandled;
 
     DangerRecoveryModeEnum dangerRecoveryMode;
     struct CommandData {

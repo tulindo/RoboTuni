@@ -62,27 +62,23 @@ void ServoController::update() {
 
 void ServoController::setMode(ServoTargetEnum target, bool oscillation) {
   SerialPrint("Servo Setting Mode ");
+  SerialPrint(enumToString(target));
   servoTarget = target;
   //Set target position based on desired target
   switch (servoTarget) {
     case LOOK_FORWARD:
-      SerialPrint("LOOK_FORWARD");
       targetPosition = DEFAULT_SERVO_POSITION;
       break;
     case LOOK_FORWARD_LEFT:
-      SerialPrint("LOOK_FORWARD_LEFT");
       targetPosition = DEFAULT_SERVO_POSITION + FORWARD_SIDE_OFFSET;
       break;
     case LOOK_FORWARD_RIGHT:
-      SerialPrint("LOOK_FORWARD_RIGHT");
       targetPosition = DEFAULT_SERVO_POSITION - FORWARD_SIDE_OFFSET;
       break;
     case LOOK_LEFT:
-      SerialPrint("LOOK_LEFT");
       targetPosition = DEFAULT_SERVO_POSITION + LOOK_SIDE_OFFSET;
       break;
     case LOOK_RIGHT:
-      SerialPrint("LOOK_RIGHT");
       targetPosition = DEFAULT_SERVO_POSITION - LOOK_SIDE_OFFSET;
       break;
   }
