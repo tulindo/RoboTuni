@@ -5,11 +5,11 @@ Queue::Queue() : front(0), rear(-1), itemCount(0) {}
 
 //Add an item to the queue
 bool Queue::enqueue(QueueData value, unsigned short occurrence) {
-  // SerialPrint("Enqueue L: ");
+  // SerialPrint(F("Enqueue Left: "));
   // SerialPrint(value.leftMotorSpeed);
-  // SerialPrint(" R: ");
+  // SerialPrint(F(" Right: "));
   // SerialPrint(value.rightMotorSpeed);
-  // SerialPrint(" T: ");
+  // SerialPrint(F(" Occurrence: "));
   // SerialPrintln(occurrence);
   if (isFull()) {
     return false;  // Coda piena

@@ -18,14 +18,14 @@ bool BluetoothLEManager::getIsConnected() {
 bool BluetoothLEManager::begin() {
   //Initialize BLE module
   if (!BLE.begin()) { 
-    SerialPrintln("starting Bluetooth® Low Energy module failed!");
+    SerialPrintln(F("starting Bluetooth® Low Energy module failed!"));
     return false;
   }
 
-  SerialPrintln("BLE correctly inizialized");
+  SerialPrintln(F("BLE correctly inizialized"));
 
-  //Set name and uuid for RobotCar Service
-  BLE.setLocalName("RobotCar");
+  //Set name and uuid for RoboTuni Service
+  BLE.setLocalName("RoboTuni");
   BLE.setAdvertisedService(robotCarService);
 
   //Add characteristics
@@ -41,7 +41,7 @@ bool BluetoothLEManager::begin() {
 
   BLE.advertise();
 
-  SerialPrintln("BLE Configured");
+  SerialPrintln(F("BLE Configured"));
   return true;
 }
 
@@ -57,7 +57,7 @@ void BluetoothLEManager::setOnCommandReceivedCallback(void (*callback)(RobotComm
 
 //Central connected event handler
 void BluetoothLEManager::onConnect(BLEDevice central) {
-  SerialPrint("Connected event, central: ");
+  SerialPrint(F("Connected event, central: "));
   SerialPrintln(central.address());
   isConnected = true;
 }
@@ -65,7 +65,7 @@ void BluetoothLEManager::onConnect(BLEDevice central) {
 //Central disconnected eventi handler
 void BluetoothLEManager::onDisconnect(BLEDevice central) {
   // central disconnected event handler
-  SerialPrint("Disconnected event, central: ");
+  SerialPrint(F("Disconnected event, central: "));
   SerialPrintln(central.address());
   isConnected = false;
 }
@@ -94,7 +94,7 @@ void BluetoothLEManager::onMotorCharacteristicWritten(BLEDevice central, BLEChar
       break;
     default:
       //Set the received command as unknnown
-      SerialPrint("Unknown command received from central: ");
+      SerialPrint(F("Unknown byte received from central: "));
       SerialPrintln(receivedCommand);
       receivedCommand = UNKNOWN_COMMAND;
     break;
@@ -104,6 +104,6 @@ void BluetoothLEManager::onMotorCharacteristicWritten(BLEDevice central, BLEChar
   if (instance->onCommandReceivedCallback) {
     instance->onCommandReceivedCallback((RobotCommandEnum)receivedCommand);
   } else {
-    SerialPrintln("Command Received Callback not set");
+    SerialPrintln(F("Command Received Callback not set"));
   }
 }

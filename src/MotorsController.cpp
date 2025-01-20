@@ -21,12 +21,12 @@ void MotorsController::moveMotors(short leftSpeed, short rightSpeed, bool isSoft
   if (leftMotor.getSpeed() != abs(leftSpeed) || 
       rightMotor.getSpeed() != abs(rightSpeed)) {
     //Motors speed changed, so apply it
-    // SerialPrint(isSoft ? "Adjusting" : "Setting");
-    // SerialPrint(" speed: (");
+    // SerialPrint(F(isSoft ? "Adjusting" : "Setting"));
+    // SerialPrint(F(" speed: ("));
     // SerialPrint(leftSpeed);
-    // SerialPrint(",");
+    // SerialPrint(F(","));
     // SerialPrint(rightSpeed);
-    // SerialPrintln(")");
+    // SerialPrintln(F(")"));
 
     leftMotor.setSpeed( leftSpeed >=0 ? leftSpeed : - leftSpeed);
     if (leftSpeed >=0) {
@@ -54,7 +54,7 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
   byte idx=0;
   if (newTargetSpeed > currentTargetSpeed) {
     //Should increase Speed
-    // SerialPrint("Increase: ");
+    // SerialPrint(F("Increase: "));
     if (newTargetSpeed <= -minSpeed) {
       //Desired speed if below backward min then immediately set desired speed 
       speeds[idx++] = newTargetSpeed;
@@ -63,11 +63,11 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
     }
     if (currentTargetSpeed < -minSpeed) {
       // SerialPrint(-minSpeed);
-      // SerialPrint(" ");
+      // SerialPrint(F(" "));
       speeds[idx++] = -minSpeed;
     }
     if (currentTargetSpeed < 0) {
-      // SerialPrint("0 ");
+      // SerialPrint(F("0 "));
       speeds[idx++] = 0;
     }
     if (newTargetSpeed == 0) {
@@ -75,7 +75,7 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
     }
     if (currentTargetSpeed < minSpeed) {
       // SerialPrint(minSpeed);
-      // SerialPrint(" ");
+      // SerialPrint(F(" "));
       speeds[idx++] = minSpeed;
     }
     if (newTargetSpeed == minSpeed) {
@@ -85,7 +85,7 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
     speeds[idx++] = newTargetSpeed;
   } else if (newTargetSpeed < currentTargetSpeed) {
     //Should decrease Speed
-    // SerialPrint("Decrease: ");
+    // SerialPrint(F("Decrease: "));
     if (newTargetSpeed >= minSpeed) {
       //Desired speed if above forward min then immediately set desired speed
       // SerialPrint(newTargetSpeed);
@@ -94,11 +94,11 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
     }
     if (currentTargetSpeed > minSpeed) {
       // SerialPrint(minSpeed);
-      // SerialPrint(" ");
+      // SerialPrint(F(" "));
       speeds[idx++] = minSpeed;
     }
     if (currentTargetSpeed > 0) {
-      // SerialPrint("0 ");
+      // SerialPrint(F("0 "));
       speeds[idx++] = 0;
     }
     if (newTargetSpeed == 0) {
@@ -106,7 +106,7 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
     }
     if (currentTargetSpeed > -minSpeed) {
       // SerialPrint(-minSpeed);
-      // SerialPrint(" ");
+      // SerialPrint(F(" "));
       speeds[idx++] = -minSpeed;
     }
     if (newTargetSpeed == -minSpeed) {
@@ -115,7 +115,7 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
     // SerialPrint(newTargetSpeed);
     speeds[idx++] = newTargetSpeed;
   } else {
-    // SerialPrint("Keep: ");
+    // SerialPrint(F("Keep: "));
     // SerialPrint(newTargetSpeed);
     speeds[idx++] = newTargetSpeed;
   }
@@ -124,19 +124,19 @@ byte MotorsController::calculateMotorSpeeds(short speeds[], short currentTargetS
 } 
 
 void MotorsController::setMotorsTargetSpeed(RobotCommandEnum command, short leftSpeed, short rightSpeed, int motorTicks) {
-  // SerialPrint("Speed : (");
+  // SerialPrint(F("Speed : ("));
   // SerialPrint(currentLeftMotorSpeed);
-  // SerialPrint(",");
+  // SerialPrint(F(","));
   // SerialPrint(currentRightMotorSpeed);
-  // SerialPrint(") -> (");
+  // SerialPrint(F(") -> ("));
   // SerialPrint(leftSpeed);
-  // SerialPrint(",");
+  // SerialPrint(F(","));
   // SerialPrint(rightSpeed);
-  // SerialPrint(") LEFT (");
+  // SerialPrint(F(") LEFT ("));
   int numLeftSteps = calculateMotorSpeeds(leftSpeedsArray, targetLeftMotorSpeed, leftSpeed);
-  // SerialPrint(") RIGHT (");
+  // SerialPrint(F(") RIGHT ("));
   int numRightSteps = calculateMotorSpeeds(rightSpeedsArray, targetRightMotorSpeed, rightSpeed);
-  // SerialPrintln(")");
+  // SerialPrintln(F(")"));
   byte steps = max(numLeftSteps, numRightSteps);
   for (byte idx = 0; idx < steps; idx++) {
     short ls = leftSpeedsArray[min(idx, numLeftSteps-1)];
@@ -171,12 +171,12 @@ void MotorsController::emergencyStop() {
 }
 
 void MotorsController::execute(RobotCommandEnum cmd, short parameter) {
-  //SerialPrint("MotorsController Execute: ");
+  //SerialPrint(F("MotorsController Execute: "));
   // SerialPrint(enumToString(cmd));
   if (parameter != 0) {
-    // SerialPrint(" (");
+    // SerialPrint((F(" ("));
     // SerialPrint(parameter);
-    // SerialPrintln(")");
+    // SerialPrintln(F(")"));
   } else {
     //SerialPrintln();
   }
