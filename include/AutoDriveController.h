@@ -23,7 +23,6 @@ class AutoDriveController {
     //Curent state of the Servo
     ServoStateEnum servoState = MotorHandled;
 
-    DangerRecoveryModeEnum dangerRecoveryMode;
     struct CommandData {
       RobotCommandEnum command; 
       byte percentage;
@@ -51,7 +50,7 @@ class AutoDriveController {
     //Constructor
     explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController, DistanceSensor* distanceSensor);
 
-    void start(DangerRecoveryModeEnum mode);
+    void start();
 
     void stop();
 

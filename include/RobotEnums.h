@@ -36,18 +36,6 @@
 
 ENUM_DEF(RobotCommandEnum, ROBOT_COMMAND_VALUES)
 
-//DangerRecoveryModeEnum definition
-//How do the robot recover from a dangerous situation when autodrive
-//I.e. what do do when the method setDangerMode has been called (after having stopped)
-enum DangerRecoveryModeEnum : byte {  
-  //Standard Revocery: Backward for 1 second then do a U-Turn (180 degrees rotation). The direction of rotation is renaom.
-  STANDARD_RECOVERY = 0,  
-  //Random Rotation: Like the standard mode but instead of a 180 degrees rotation do a random rotation (180 +/- 45%)
-  RANDOM_ROTATION_RECOVERY = 1,
-  //Servo Based Recovery: Goes backward for half a second and stops again. Then looks left and right to ged the best direction to turn. Than turns on that direction 
-  SERVO_BASED_RECOVERY = 2,
-};
-
 //AutoDriveStateEnum definition
 //This enum defines the various states used by the state machine during auto drive mode
 #define AUTO_DRIVE_STATE_VALUES(V)     \  

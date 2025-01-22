@@ -12,7 +12,6 @@ AutoDriveController::AutoDriveController(
   distanceSensor(distanceSensor),
   timer([this]() { onTick(); }, 1000, 0, MILLIS) {
     instance = this;
-    dangerRecoveryMode = STANDARD_RECOVERY;
     isEnabled = false;
     commands[0] = { MOVE_FORWARD, 30, 2000, 4000 };
     commands[1] = { TURN_LEFT, 15, 1000, 2000 };
@@ -50,33 +49,26 @@ void AutoDriveController::onTickNormalDrive() {
 
 void AutoDriveController::onTickUTurn() {
   timer.interval(3000);
-  int delta = 0;
-  if (dangerRecoveryMode == RANDOM_ROTATION_RECOVERY) {
-    delta = random(-45, 45);
-  }
   //Default is random direction
   RobotCommandEnum uTurnCommand = random(2) == 0 ? U_TURN_LEFT : U_TURN_RIGHT;
-  if (dangerRecoveryMode == SERVO_BASED_RECOVERY) {
-    //Direction to turn is chosed by the min and max distances reported by the servo
-    delta = -45;
-    if (abs(minLeftDistance - minRightDistance) > 5) {
-      //If min distances differs more than 5cm choose the safest direction
-      //i.e. the direction corresponding to the max value
-      uTurnCommand = minLeftDistance > minRightDistance ? U_TURN_LEFT : U_TURN_RIGHT;
-      SerialPrint(F("Choosing direction using min distance: "));
-      SerialPrintln(F(minLeftDistance > minRightDistance ? "LEFT": "RIGHT"));
-    } else if (abs(maxLeftDistance - maxRightDistance) > 5) {
-      //If min distance are close each other and max distance differs more than 5cm
-      //chose the direction corresponding to the max value
-      uTurnCommand = maxLeftDistance > maxRightDistance ? U_TURN_LEFT : U_TURN_RIGHT;
-      SerialPrint(F("Choosing direction using max distance: "));
-      SerialPrintln(F(maxLeftDistance > maxRightDistance ? "LEFT": "RIGHT"));
-    } else {
-      SerialPrintln(F("Coosing random direction"));
-    }
+  //Direction to turn is chosed by the min and max distances reported by the servo
+  if (abs(minLeftDistance - minRightDistance) > 5) {
+    //If min distances differs more than 5cm choose the safest direction
+    //i.e. the direction corresponding to the max value
+    uTurnCommand = minLeftDistance > minRightDistance ? U_TURN_LEFT : U_TURN_RIGHT;
+    SerialPrint(F("Choosing direction using min distance: "));
+    SerialPrintln(F(minLeftDistance > minRightDistance ? "LEFT": "RIGHT"));
+  } else if (abs(maxLeftDistance - maxRightDistance) > 5) {
+    //If min distance are close each other and max distance differs more than 5cm
+    //chose the direction corresponding to the max value
+    uTurnCommand = maxLeftDistance > maxRightDistance ? U_TURN_LEFT : U_TURN_RIGHT;
+    SerialPrint(F("Choosing direction using max distance: "));
+    SerialPrintln(F(maxLeftDistance > maxRightDistance ? "LEFT": "RIGHT"));
+  } else {
+    SerialPrintln(F("Coosing random direction"));
   }
   //Move motors to the desired direction
-  motorsController->execute(uTurnCommand, delta );
+  motorsController->execute(uTurnCommand, -45 );
   //Back to normal drive
   state = NormalDrive;
 }
@@ -88,7 +80,7 @@ void AutoDriveController::onTickLookSide(bool isRight) {
   SerialPrint(F("): "));
   if (servoState == Forward) {
     SerialPrint(F("Servo Look"));
-    SerialPrintln(F(isRight ? "Right" : "Left"));
+    SerialPrintln(isRight ? F("Right") : F("Left"));
     //We just entered into this state: start moving the servo in order to check side
     servoController->setMode(isRight ? LOOK_RIGHT : LOOK_LEFT);
     servoState = Looking;
@@ -109,7 +101,7 @@ void AutoDriveController::onTickLookSide(bool isRight) {
     servoState = Resuming;
   } else if (servoState == Resumed) {
     SerialPrint(F("Servo Looked "));
-    SerialPrintln(F(isRight ? "Right" : "Left"));
+    SerialPrintln(isRight ? F("Right") : F("Left"));
     //The servo reached the FORWARD Position
     servoState = isRight? Forward : MotorHandled;
     if (!isRight) {
@@ -124,7 +116,7 @@ void AutoDriveController::onTickLookSide(bool isRight) {
     float minDistance = distanceSensor->getMinDistance();
     float maxDistance = distanceSensor->getMaxDistance();
     SerialPrint(F("Calculated "));
-    SerialPrint(F(isRight ? "Right" : "Left"));
+    SerialPrint(isRight ? F("Right") : F("Left"));
     SerialPrint(F(" Distance min: "));
     SerialPrint(minDistance);
     SerialPrint(F(" max: "));
@@ -137,7 +129,6 @@ void AutoDriveController::onTickLookSide(bool isRight) {
       maxLeftDistance = maxDistance;
     }
     //Stop Distance Analysis
-
   } else {
     SerialPrintln(F("Waiting"));
   }
@@ -156,24 +147,27 @@ void AutoDriveController::onTick() {
       //Don't move for 1 second
       timer.interval(1000);
       motorsController->execute(STOP);
-      state = dangerRecoveryMode == SERVO_BASED_RECOVERY ? LookRight : Backward;
       //Setting ServoState to Forward triggers the servo to look for best direction to turn
       servoState = Forward;
+      state = LookRight;
+      break;
+    case LookRight:
+      //Check the right side
+      onTickLookSide(true);
+      break;
+    case LookLeft:
+      //Check left
+      onTickLookSide(false);
       break;
     case Backward:
-      //Move backward for 1 second (200ms if ServoBased Recovery)
-      timer.interval(dangerRecoveryMode == SERVO_BASED_RECOVERY ? 200 : 1000);
+      //Move backward 200ms for safety
+      timer.interval(200);
       motorsController->execute(MOVE_BACKWARD);
       state = UTurn;      
       break;
     case UTurn:
+      //UTurn on the best direction based on distance
       onTickUTurn();
-      break;
-    case LookRight:
-      onTickLookSide(true);
-      break;
-    case LookLeft:
-      onTickLookSide(false);
       break;
   }
   timer.start();
@@ -208,10 +202,8 @@ void AutoDriveController::onServoTargetReached(ServoTargetEnum target) {
   }
 }
 
-void AutoDriveController::start(DangerRecoveryModeEnum mode) {
+void AutoDriveController::start() {
     randomSeed(micros());
-    //Set the recovery mode
-    dangerRecoveryMode = mode;
     isEnabled = true;
     //Start the timer
     state = NormalDrive;

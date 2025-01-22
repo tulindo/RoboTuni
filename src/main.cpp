@@ -101,7 +101,7 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
     matrix.showCommand(command);
     if (command == AUTO_DRIVE) {
       //Start Automatic drive mode
-      autoDriveController.start(SERVO_BASED_RECOVERY);
+      autoDriveController.start();
     } else {
       //Stop automatic drive mode if it was enabled
       if (autoDriveController.getIsEnabled()) {
