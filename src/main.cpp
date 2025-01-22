@@ -93,7 +93,7 @@ void danger() {
 
 //Callback called when a command from BLE is received
 void myCommandReceivedCallback(RobotCommandEnum command) {
-  // SerialPrint(F("Received command: "));
+  // SerialPrint("Received command: ");
   // SerialPrintln(enumToString(command));
   if ((!isUnsafeDistanceFront || motorsController.isSafeCommandFront(command)) &&
       (!isUnsafeDistanceBack || motorsController.isSafeCommandBack(command))) {
@@ -119,7 +119,7 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
 
 //Callback called when a motor command is Executed
 void myCommandExecutedCallback(RobotCommandEnum command) {
-  // SerialPrint(F("Executed command: "));
+  // SerialPrint("Executed command: ");
   // SerialPrintln(enumToString(command));
   //Handle Oscillation Servo Controller
   switch (command) {
@@ -200,7 +200,7 @@ void setup() {
 
   //Initialize Serial
   while (!Serial);
-  Serial.println(F("Serial communication initialized"));
+  Serial.println("Serial communication initialized");
   delay(1000);
 
   matrix.showImage(IMG_BATTERY_30);

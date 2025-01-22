@@ -56,16 +56,16 @@ void AutoDriveController::onTickUTurn() {
     //If min distances differs more than 5cm choose the safest direction
     //i.e. the direction corresponding to the max value
     uTurnCommand = minLeftDistance > minRightDistance ? U_TURN_LEFT : U_TURN_RIGHT;
-    SerialPrint(F("Choosing direction using min distance: "));
-    SerialPrintln(F(minLeftDistance > minRightDistance ? "LEFT": "RIGHT"));
+    SerialPrint("Choosing direction using min distance: ");
+    SerialPrintln(minLeftDistance > minRightDistance ? "LEFT": "RIGHT");
   } else if (abs(maxLeftDistance - maxRightDistance) > 5) {
     //If min distance are close each other and max distance differs more than 5cm
     //chose the direction corresponding to the max value
     uTurnCommand = maxLeftDistance > maxRightDistance ? U_TURN_LEFT : U_TURN_RIGHT;
-    SerialPrint(F("Choosing direction using max distance: "));
-    SerialPrintln(F(maxLeftDistance > maxRightDistance ? "LEFT": "RIGHT"));
+    SerialPrint("Choosing direction using max distance: ");
+    SerialPrintln(maxLeftDistance > maxRightDistance ? "LEFT": "RIGHT");
   } else {
-    SerialPrintln(F("Coosing random direction"));
+    SerialPrintln("Coosing random direction");
   }
   //Move motors to the desired direction
   motorsController->execute(uTurnCommand, -45 );
@@ -75,12 +75,12 @@ void AutoDriveController::onTickUTurn() {
 
 void AutoDriveController::onTickLookSide(bool isRight) {
   timer.interval(100);
-  SerialPrint(F(" ServoState ("));
+  SerialPrint(" ServoState (");
   SerialPrint(enumToString(servoState));
-  SerialPrint(F("): "));
+  SerialPrint("): ");
   if (servoState == Forward) {
-    SerialPrint(F("Servo Look"));
-    SerialPrintln(isRight ? F("Right") : F("Left"));
+    SerialPrint("Servo Look");
+    SerialPrintln(isRight ? "Right" : "Left");
     //We just entered into this state: start moving the servo in order to check side
     servoController->setMode(isRight ? LOOK_RIGHT : LOOK_LEFT);
     servoState = Looking;
@@ -96,12 +96,12 @@ void AutoDriveController::onTickLookSide(bool isRight) {
     distanceSensor->startDistanceAnalysis();
   } else if (servoState == Looked) {
     //The servo reached the desired position. Return looking formard while still measuring distance
-    SerialPrintln(F("Servo LookForward"));
+    SerialPrintln("Servo LookForward");
     servoController->setMode(LOOK_FORWARD);
     servoState = Resuming;
   } else if (servoState == Resumed) {
-    SerialPrint(F("Servo Looked "));
-    SerialPrintln(isRight ? F("Right") : F("Left"));
+    SerialPrint("Servo Looked ");
+    SerialPrintln(isRight ? "Right" : "Left");
     //The servo reached the FORWARD Position
     servoState = isRight? Forward : MotorHandled;
     if (!isRight) {
@@ -115,11 +115,11 @@ void AutoDriveController::onTickLookSide(bool isRight) {
     //Calculate min/max distances
     float minDistance = distanceSensor->getMinDistance();
     float maxDistance = distanceSensor->getMaxDistance();
-    SerialPrint(F("Calculated "));
-    SerialPrint(isRight ? F("Right") : F("Left"));
-    SerialPrint(F(" Distance min: "));
+    SerialPrint("Calculated ");
+    SerialPrint(isRight ? "Right" : "Left");
+    SerialPrint(" Distance min: ");
     SerialPrint(minDistance);
-    SerialPrint(F(" max: "));
+    SerialPrint(" max: ");
     SerialPrintln(maxDistance);
     if (isRight) {
       minRightDistance = minDistance;
@@ -130,13 +130,13 @@ void AutoDriveController::onTickLookSide(bool isRight) {
     }
     //Stop Distance Analysis
   } else {
-    SerialPrintln(F("Waiting"));
+    SerialPrintln("Waiting");
   }
 }
 
 void AutoDriveController::onTick() {
   timer.stop();
-  SerialPrint(F("OnTick State "));
+  SerialPrint("OnTick State ");
   SerialPrintln(enumToString(state));
   switch (state) {
     case NormalDrive:
@@ -175,30 +175,30 @@ void AutoDriveController::onTick() {
 
 void AutoDriveController::onServoTargetReached(ServoTargetEnum target) {
   //This callback is executed when the servo reached the target
-  SerialPrint(F("Servo AutoDrive callback Target ("));
+  SerialPrint("Servo AutoDrive callback Target (");
   SerialPrint(enumToString(target));
-  SerialPrint(F(") State ("));
+  SerialPrint(") State (");
   SerialPrint(enumToString(state));
-  SerialPrint(F(") ServoState ("));
+  SerialPrint(") ServoState (");
   SerialPrint(enumToString(servoState));
-  SerialPrint(F(") "));
+  SerialPrint(") ");
   if (state == LookLeft || state == LookRight) {
     switch (target) {
       case LOOK_RIGHT:
       case LOOK_LEFT:
-        SerialPrintln(F("IsTargetReached"));
+        SerialPrintln("IsTargetReached");
         servoState = Looked;
         break;
       case LOOK_FORWARD:
-        SerialPrintln(F("IsForwardReached"));
+        SerialPrintln("IsForwardReached");
         servoState = Resumed;
         break;
       default:
-        SerialPrintln(F("Invalid Target"));
+        SerialPrintln("Invalid Target");
     }
   } else {
     //This should never happen (the callback shoult be registered only in the proper states)
-    SerialPrintln(F("Invalid State"));
+    SerialPrintln("Invalid State");
   }
 }
 

@@ -65,9 +65,9 @@ void MatrixController::showCommand(RobotCommandEnum command) {
     //start the timer that will delete the image after 1 second
     timer.start();
   } else {
-    SerialPrint(F("Command image "));
+    SerialPrint("Command image ");
     SerialPrint(enumToString(command));
-    SerialPrintln(F(" not found!"));
+    SerialPrintln(" not found!");
   }
 }
 
@@ -76,8 +76,8 @@ void MatrixController::showImage(MatrixImageEnum image) {
   if (frame != nullptr) {
     loadFrame(frame);
   } else {
-    SerialPrint(F("Image "));
+    SerialPrint("Image ");
     SerialPrint(enumToString(image));
-    SerialPrintln(F(" not found!"));
+    SerialPrintln(" not found!");
   }
 }

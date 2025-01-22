@@ -9,7 +9,7 @@
   enum name : byte {                       \
     values(ENUM_VALUE)                     \
   };                                       \
-  const __FlashStringHelper* enumToString(name value);
+  const char* enumToString(name value);
 
 //RobotCommandEnum definition
 //This enum contains the various robot commands

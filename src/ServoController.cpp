@@ -47,9 +47,9 @@ void ServoController::onTick() {
     step = isIncreasingPosition ? 1 : -1;
   }
   if (step != 0) {
-    // SerialPrint(F("Servo TargetPosition : "));
+    // SerialPrint("Servo TargetPosition : ");
     // SerialPrint(targetPosition);
-    // SerialPrint(F(" Position: "));
+    // SerialPrint(" Position: ");
     servoPosition += step;
     // SerialPrintln(servoPosition);
     servo.write(servoPosition);
@@ -88,9 +88,9 @@ void ServoController::setMode(ServoTargetEnum target, bool oscillation) {
   isTargetReached = false;
   //Tell if, after reaching the target, there will be some oscillation.
   isOscillation = oscillation;
-  SerialPrint(F(" Target: "));
+  SerialPrint(" Target: ");
   SerialPrint(targetPosition);
-  SerialPrint(F(" Oscillation: "));
+  SerialPrint(" Oscillation: ");
   SerialPrintln(oscillation);
 }
 

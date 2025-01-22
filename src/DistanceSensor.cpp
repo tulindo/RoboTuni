@@ -16,9 +16,9 @@ float DistanceSensor::convertTimeToDistance(unsigned int time) {
 
 float DistanceSensor::getDistance() {
   //Convert pulseTime to cm.
-  //SerialPrint(F("Measured distance in cm: "));
+  //SerialPrint("Measured distance in cm: ");
   float distance = convertTimeToDistance(pulseTime);
-  // SerialPrint(F("Distance: "));
+  // SerialPrint("Distance: ");
   // SerialPrintln(distance);
   return distance;
 }
@@ -87,11 +87,11 @@ void DistanceSensor::distanceBlocking() {
     pulseTime = MAX_PULSE_TIME;
   }
   if (isAnalyzingDistance) {
-    SerialPrint(F("Detected pulseTime: "));
+    SerialPrint("Detected pulseTime: ");
     SerialPrint(pulseTime);
-    SerialPrint(F(" Current Min: "));
+    SerialPrint(" Current Min: ");
     SerialPrint(currentMinPulseTime);
-    SerialPrint(F(" Current Max: "));
+    SerialPrint(" Current Max: ");
     SerialPrintln(currentMaxPulseTime);
   }
   if (isAnalyzingDistance && pulseTime > currentMaxPulseTime) {
@@ -103,13 +103,13 @@ void DistanceSensor::distanceBlocking() {
 }
 
 void DistanceSensor::startDistanceAnalysis() {
-  SerialPrintln(F("Starting Distance Analysis"));
+  SerialPrintln("Starting Distance Analysis");
   currentMinPulseTime = currentMaxPulseTime = pulseTime;
   isAnalyzingDistance = true; 
 } 
 
 void DistanceSensor::stopDistanceAnalysis() {
-  SerialPrintln(F("Stopping Distance Analysis"));
+  SerialPrintln("Stopping Distance Analysis");
   isAnalyzingDistance = false;
 }
 

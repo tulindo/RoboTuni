@@ -1,12 +1,12 @@
 #include "RobotEnums.h"
 
 //Macro definition to implement the enumToString function 
-#define ENUM_CASE(name, value, string) case name: return F(string);
+#define ENUM_CASE(name, value, string) case name: return string;
 #define ENUM_IMPL(name, values)            \
-  const __FlashStringHelper* enumToString(name value) {   \
+  const char* enumToString(name value) {   \
     switch (value) {                       \
       values(ENUM_CASE)                    \
-      default: return F("Unknown");           \
+      default: return "Unknown";           \
     }                                      \
   }
 
