@@ -9,6 +9,7 @@
 #include <Arduino.h>
 #include <ArduinoBLE.h>
 #include "RobotEnums.h"
+#include <EEPromConfiguration.h>
 
 class BluetoothLEManager {
   private:
@@ -23,11 +24,13 @@ class BluetoothLEManager {
     void (*onCommandReceivedCallback)(RobotCommandEnum);  
     static BluetoothLEManager* instance;
 
+    //Debug internal variable
+    static bool isDebug; 
   public:
     BluetoothLEManager();
     bool getIsConnected();
     void update();
-    bool begin();
+    bool begin(EEPromConfiguration configuration);
     //Set the callback that will be called when a command is received
     void setOnCommandReceivedCallback(void (*callback)(RobotCommandEnum));
 };

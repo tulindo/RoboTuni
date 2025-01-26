@@ -40,6 +40,8 @@ class MotorsController {
     void (*onCommandExecutedCallback)(RobotCommandEnum); 
     static MotorsController* instance;
 
+    //Debug internal variable
+    static bool isDebug; 
   public:
 
     //Constructor
@@ -52,7 +54,7 @@ class MotorsController {
       int pinBacwardRight);
 
     //Initialize speeds given the configuration
-    void inizializeSpeeds(EEPromConfiguration configuration);
+    void begin(EEPromConfiguration configuration);
 
     //Emergency stop
     void emergencyStop();

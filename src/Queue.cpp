@@ -1,16 +1,18 @@
 #include "Queue.h"
 
 //Constructor
-Queue::Queue() : front(0), rear(-1), itemCount(0) {}
+Queue::Queue() : front(0), rear(-1), itemCount(0) {
+  isDebug = false;
+}
 
 //Add an item to the queue
 bool Queue::enqueue(QueueData value, unsigned short occurrence) {
-  // SerialPrint("Enqueue Left: ");
-  // SerialPrint(value.leftMotorSpeed);
-  // SerialPrint(" Right: ");
-  // SerialPrint(value.rightMotorSpeed);
-  // SerialPrint(" Occurrence: ");
-  // SerialPrintln(occurrence);
+  SerialPrint("Enqueue Left: ");
+  SerialPrint(value.leftMotorSpeed);
+  SerialPrint(" Right: ");
+  SerialPrint(value.rightMotorSpeed);
+  SerialPrint(" Occurrence: ");
+  SerialPrintln(occurrence);
   if (isFull()) {
     return false;  // Coda piena
   }
@@ -19,6 +21,11 @@ bool Queue::enqueue(QueueData value, unsigned short occurrence) {
   queue[rear].occurrence = occurrence;
   itemCount++;
   return true;
+}
+
+void Queue::begin(EEPromConfiguration configuration) {
+  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugQueue;
+
 }
 
 //Get an item from the queue

@@ -40,7 +40,9 @@ void MatrixController::onTick() {
 }
 
 //Without this apparently useless method matrix doesn't display images
-void MatrixController::begin() {
+void MatrixController::begin(EEPromConfiguration configuration) {
+  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugMatrixController;
+
   ArduinoLEDMatrix::begin();
 }
 

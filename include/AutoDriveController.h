@@ -2,7 +2,7 @@
 #define _AUTODRIVE_CONTROLLER_H
 
 #include "serial.h"
-
+#include "EEPromConfiguration.h"
 #include "MotorsController.h"
 #include "ServoController.h"
 #include "DistanceSensor.h"
@@ -45,12 +45,14 @@ class AutoDriveController {
     void onTickNormalDrive();
     void onTickUTurn();
     void onTickLookSide(bool isRight);
-
+    
+    //Debug internal variable
+    static bool isDebug; 
   public:
     //Constructor
     explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController, DistanceSensor* distanceSensor);
 
-    void start();
+    void start(EEPromConfiguration configuration);
 
     void stop();
 

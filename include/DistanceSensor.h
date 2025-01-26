@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <NewPing.h>
 #include "serial.h"
+#include <EEPromConfiguration.h>
 
 class DistanceSensor {
   private:
@@ -33,10 +34,17 @@ class DistanceSensor {
     //NewPing sonar (used by the blocking calculation)
     NewPing sonar;
     float inline convertTimeToDistance(unsigned int time);
+
+    //Debug internal variable
+    bool isDebug; 
+
   public:
 
     //Constructor
     explicit DistanceSensor(int trigPin, int echoPin, int maxDistance);
+
+    //Inizialize the sensor
+    void begin(EEPromConfiguration configuration);
 
     //Get the calculated distance based on the last measures
     float getDistance();

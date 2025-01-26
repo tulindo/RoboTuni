@@ -20,29 +20,36 @@ void EEPromConfiguration::setIsSoftMode(bool value) {
 }
 
 byte EEPromConfiguration::getMinMotorsSpeed() {
-    return eePromData.minMotorsSpeed;
+  return eePromData.minMotorsSpeed;
 }
 void EEPromConfiguration::setMinMotorsSpeed(byte value) {
-    eePromData.minMotorsSpeed = value;
+  eePromData.minMotorsSpeed = value;
 }
 
 byte EEPromConfiguration::getMaxMotorsSpeed() {
-    return eePromData.maxMotorsSpeed;
+  return eePromData.maxMotorsSpeed;
 }
 void EEPromConfiguration::setMaxMotorsSpeed(byte value) {
-    eePromData.maxMotorsSpeed = value;
+  eePromData.maxMotorsSpeed = value;
 }
 
 byte EEPromConfiguration::getDriftingCorrection() {
-    return eePromData.driftingCorrection;
+  return eePromData.driftingCorrection;
 }
 void EEPromConfiguration::setDriftingCorrection(byte value) {
-    eePromData.driftingCorrection = value;
+  eePromData.driftingCorrection = value;
 }
 
 byte EEPromConfiguration::getTimingControlTick() {
-    return eePromData.timingControlTick;
+  return eePromData.timingControlTick;
 }
 void EEPromConfiguration::setTimingControlTick(byte value) {
-    eePromData.timingControlTick = value;
+  eePromData.timingControlTick = value;
+}
+
+SerialDebugEnum EEPromConfiguration::getSerialDebug() {
+  return (SerialDebugEnum)eePromData.serialDebug;
+}
+void EEPromConfiguration::setSerialDebug(SerialDebugEnum value) {
+  eePromData.serialDebug = (byte)value;  
 }

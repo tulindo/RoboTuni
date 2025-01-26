@@ -1,7 +1,8 @@
 #include "ServoController.h"
 
-//Initialize static variables (otherwise linker will fail)
+//Initialize static variables
 ServoController* ServoController::instance = nullptr;
+bool ServoController::isDebug = false;
 
 ServoController::ServoController(int servoPin, int timerDelay) : 
   servoPin(servoPin),
@@ -12,7 +13,9 @@ ServoController::ServoController(int servoPin, int timerDelay) :
     targetReachingSteps = TARGET_REACHING_STEPS;
 }
 
-void ServoController::begin() {
+void ServoController::begin(EEPromConfiguration configuration) {
+  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugServoController;
+
   servoPosition = DEFAULT_SERVO_POSITION;
   targetPosition = DEFAULT_SERVO_POSITION;
   isIncreasingPosition = true;
@@ -47,11 +50,11 @@ void ServoController::onTick() {
     step = isIncreasingPosition ? 1 : -1;
   }
   if (step != 0) {
-    // SerialPrint("Servo TargetPosition : ");
-    // SerialPrint(targetPosition);
-    // SerialPrint(" Position: ");
+    SerialPrint("Servo TargetPosition : ");
+    SerialPrint(targetPosition);
+    SerialPrint(" Position: ");
     servoPosition += step;
-    // SerialPrintln(servoPosition);
+    SerialPrintln(servoPosition);
     servo.write(servoPosition);
   }
 }

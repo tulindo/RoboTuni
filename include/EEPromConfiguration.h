@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 #include <EEPROM.h>
-#include "serial.h"
+
+#include "RobotEnums.h"
 
 class EEPromConfiguration {
   private:
@@ -11,9 +12,10 @@ class EEPromConfiguration {
     struct EEPromData {
       byte isSoftMode = 255;
       byte minMotorsSpeed = 100;
-      byte maxMotorsSpeed = 150; //210;
+      byte maxMotorsSpeed = 150;
       byte driftingCorrection = 0;
       byte timingControlTick = 20;
+      byte serialDebug = 0;      
     } eePromData;
   public:
     //Constructor
@@ -48,6 +50,10 @@ class EEPromConfiguration {
     //Motor adjustment speed timer delay
     byte getTimingControlTick();
     void setTimingControlTick(byte value);
+
+    //Serial Debug Level
+    SerialDebugEnum getSerialDebug();
+    void setSerialDebug(SerialDebugEnum value);
 };
 
 #endif

@@ -2,6 +2,8 @@
 #define QUEUE_H
 
 #include <Arduino.h>
+#include <EEPromConfiguration.h>
+
 #include "RobotEnums.h"
 #include "serial.h"
 
@@ -27,8 +29,13 @@ class Queue {
     int rear;                        //Index of the last element of the queue
     int itemCount;                   //Number of elements in the queue
 
+    //Debug internal variable
+    bool isDebug; 
   public:
     Queue();
+
+    //Initialize debug stuff
+    void begin(EEPromConfiguration configuration);
 
     //Add and element (or n copies of the element itself) to the queue
     bool enqueue(QueueData value, unsigned short occurrence = 1);

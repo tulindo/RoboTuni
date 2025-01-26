@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <Ticker.h>
 #include <Servo.h>
+#include <EEPromConfiguration.h>
 #include "serial.h"
 
 #include "RobotEnums.h"
@@ -45,13 +46,15 @@ class ServoController {
     void (*onTargetReachedCallback)(ServoTargetEnum); 
     static ServoController* instance;
 
+    //Debug internal variable
+    static bool isDebug; 
   public:
 
     //Constructor
     explicit ServoController(int servoPin, int timerDelay);
 
     //Initialize servo
-    void begin();
+    void begin(EEPromConfiguration configuration);
 
     //Set Servo mode
     void setMode(ServoTargetEnum target, bool oscillation = false);

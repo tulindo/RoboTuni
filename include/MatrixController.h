@@ -7,7 +7,7 @@
 #include <Arduino_LED_Matrix.h>
 
 #include <Ticker.h>
-
+#include <EEPromConfiguration.h>
 #include "serial.h"
 
 class MatrixController : public ArduinoLEDMatrix {
@@ -24,10 +24,12 @@ private:
   Ticker timer;
   void onTick();
 
+  //Debug internal variable
+  bool isDebug; 
 public:
   explicit MatrixController();        
 
-  void begin();
+  void begin(EEPromConfiguration configuration);
     
   void update();
   

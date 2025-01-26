@@ -7,6 +7,7 @@ DistanceSensor::DistanceSensor(int trigPin, int echoPin, int maxDistance) :
   echoPin(echoPin),
   maxDistance(maxDistance),
   sonar(trigPin, echoPin, maxDistance) {
+    isDebug = false;
     isSinglePin = trigPin == echoPin;
 }
 
@@ -16,10 +17,10 @@ float DistanceSensor::convertTimeToDistance(unsigned int time) {
 
 float DistanceSensor::getDistance() {
   //Convert pulseTime to cm.
-  //SerialPrint("Measured distance in cm: ");
+  SerialPrint("Measured distance in cm: ");
   float distance = convertTimeToDistance(pulseTime);
-  // SerialPrint("Distance: ");
-  // SerialPrintln(distance);
+  SerialPrint("Distance: ");
+  SerialPrintln(distance);
   return distance;
 }
 
@@ -119,4 +120,8 @@ float DistanceSensor::getMinDistance() {
 
 float DistanceSensor::getMaxDistance() {
   return convertTimeToDistance(currentMaxPulseTime);
+}
+
+void DistanceSensor::begin(EEPromConfiguration configuration) {
+  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugDistanceSensor;
 }

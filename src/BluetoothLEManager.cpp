@@ -1,8 +1,9 @@
 #include "BluetoothLEManager.h"
 
-//Initialize static variables (otherwise linker will fail)
+//Initialize static variables
 BluetoothLEManager* BluetoothLEManager::instance = nullptr;
 bool BluetoothLEManager::isConnected = false;
+bool BluetoothLEManager::isDebug = false;
 
 BluetoothLEManager::BluetoothLEManager() :
   robotCarService(SERVICE_UUID),
@@ -15,7 +16,9 @@ bool BluetoothLEManager::getIsConnected() {
   return isConnected;
 }
 
-bool BluetoothLEManager::begin() {
+bool BluetoothLEManager::begin(EEPromConfiguration configuration) {
+  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugBluetoothLEManager;
+
   //Initialize BLE module
   if (!BLE.begin()) { 
     SerialPrintln("starting Bluetooth® Low Energy module failed!");

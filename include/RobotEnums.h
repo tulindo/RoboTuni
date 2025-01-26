@@ -3,6 +3,8 @@
 
 #include <Arduino.h>
 
+#include "serial.h"
+
 //Macro definitions used to define enums whose values can easily be translated to string
 #define ENUM_VALUE(name, value, string) name = value,
 #define ENUM_DEF(name, values)             \
@@ -11,8 +13,7 @@
   };                                       \
   const char* enumToString(name value);
 
-//RobotCommandEnum definition
-//This enum contains the various robot commands
+//RobotCommandEnum: Contains the various robot commands
 #define ROBOT_COMMAND_VALUES(V)                           \
     V(STOP,                  0, "STOP")                   \
     V(MOVE_FORWARD,          1, "MOVE_FORWARD")           \
@@ -36,8 +37,7 @@
 
 ENUM_DEF(RobotCommandEnum, ROBOT_COMMAND_VALUES)
 
-//AutoDriveStateEnum definition
-//This enum defines the various states used by the state machine during auto drive mode
+//AutoDriveStateEnum: Defines the various states used by the state machine during auto drive mode
 #define AUTO_DRIVE_STATE_VALUES(V)     \  
   V(NormalDrive, 0, "NormalDrive")     \  
   V(Stopped,     1, "Stopped")         \   
@@ -48,8 +48,7 @@ ENUM_DEF(RobotCommandEnum, ROBOT_COMMAND_VALUES)
   V(Turn,        6, "Turn")             
 ENUM_DEF(AutoDriveStateEnum, AUTO_DRIVE_STATE_VALUES)
 
-//MatrixImageEnum definition
-//This enum defines the various images displayed in the matrix
+//MatrixImageEnum: Defines the various images displayed in the matrix
 #define MATRIX_IMAGE_VALUES(V)                       \  
   V(IMG_LOGO_BLE,        200, "IMG_LOGO_BLE")        \  
   V(IMG_LOGO_BLE_DOT,    201, "IMG_LOGO_BLE_DOT")    \
@@ -61,8 +60,7 @@ ENUM_DEF(AutoDriveStateEnum, AUTO_DRIVE_STATE_VALUES)
   V(IMG_CLEAR,           207, "IMG_CLEAR")             
 ENUM_DEF(MatrixImageEnum, MATRIX_IMAGE_VALUES)
 
-//ServoStateEnum definition
-//this enum defines substates used to handle servo in servo based recovery
+//ServoStateEnum: Defines substates used to handle servo in servo based recovery
 // MotorHandled - The servo is handled by the motors
 // Forward      - The servo looks fixed forward 
 // Looking      - The servo is looking left or right
@@ -78,8 +76,7 @@ ENUM_DEF(MatrixImageEnum, MATRIX_IMAGE_VALUES)
   V(Resumed,      5, "Resumed")              
 ENUM_DEF(ServoStateEnum, SERVO_STATE_VALUES)
 
-//ServoTargetEnum definition
-//this enum defines the variuos target for the servo control
+//ServoTargetEnum: Defines the variuos target for the servo control
 #define SERVO_TARGET_VALUES(V)                        \  
   V(LOOK_FORWARD,         0, "LOOK_FORWARD")          \  
   V(LOOK_FORWARD_LEFT,    1, "LOOK_FORWARD_LEFT")     \  
@@ -87,6 +84,19 @@ ENUM_DEF(ServoStateEnum, SERVO_STATE_VALUES)
   V(LOOK_LEFT,            3, "LOOK_LEFT")             \
   V(LOOK_RIGHT,           4, "LOOK_RIGHT")              
 ENUM_DEF(ServoTargetEnum, SERVO_TARGET_VALUES)
+
+//SerialDebugEnum: Contains various flags used for debug printing
+enum SerialDebugEnum : byte {
+  DebugNothing = 0,
+  DebugMain = 1,
+  DebugAutoDriveController = 2,
+  DebugDistanceSensor = 4,
+  DebugBluetoothLEManager = 8,
+  DebugMotorsController = 16,
+  DebugServoController = 32,
+  DebugMatrixController = 64,
+  DebugQueue = 128
+};
 
 #endif
 

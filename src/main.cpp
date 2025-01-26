@@ -3,6 +3,8 @@
 //Include serial defines
 #include "serial.h"
 
+bool isDebug = false;
+
 //EEProm configuration object
 #include "EEPromConfiguration.h"
 EEPromConfiguration eePromConfig;
@@ -93,15 +95,15 @@ void danger() {
 
 //Callback called when a command from BLE is received
 void myCommandReceivedCallback(RobotCommandEnum command) {
-  // SerialPrint("Received command: ");
-  // SerialPrintln(enumToString(command));
+  SerialPrint("Received command: ");
+  SerialPrintln(enumToString(command));
   if ((!isUnsafeDistanceFront || motorsController.isSafeCommandFront(command)) &&
       (!isUnsafeDistanceBack || motorsController.isSafeCommandBack(command))) {
     //It's safe to execute the received command
     matrix.showCommand(command);
     if (command == AUTO_DRIVE) {
       //Start Automatic drive mode
-      autoDriveController.start();
+      autoDriveController.start(eePromConfig);
     } else {
       //Stop automatic drive mode if it was enabled
       if (autoDriveController.getIsEnabled()) {
@@ -119,8 +121,8 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
 
 //Callback called when a motor command is Executed
 void myCommandExecutedCallback(RobotCommandEnum command) {
-  // SerialPrint("Executed command: ");
-  // SerialPrintln(enumToString(command));
+  SerialPrint("Executed command: ");
+  SerialPrintln(enumToString(command));
   //Handle Oscillation Servo Controller
   switch (command) {
     case MOVE_FORWARD:
@@ -192,20 +194,23 @@ void blinkBleTimer() {
 }
 Ticker timerBlinkBle(blinkBleTimer, 1000, 0, MILLIS);
 
-void setup() { 
+void setup() {   
+  //Initialize Serial
+#if VERBOSE
   Serial.begin(115200);
+  while (!Serial);
+  SerialPrintln("Serial communication initialized");
+#endif 
+  isDebug = eePromConfig.getSerialDebug() & SerialDebugEnum::DebugMain;
 
-  matrix.begin();
+  matrix.begin(eePromConfig);
   matrix.showImage(IMG_BATTERY_0);
 
-  //Initialize Serial
-  while (!Serial);
-  Serial.println("Serial communication initialized");
   delay(1000);
 
   matrix.showImage(IMG_BATTERY_30);
   //Init configuration
-  motorsController.inizializeSpeeds(eePromConfig);
+  motorsController.begin(eePromConfig);
   delay(1000);
 
   matrix.showImage(IMG_BATTERY_60);
@@ -216,7 +221,7 @@ void setup() {
  
   delay(1000);
 
-  if (!bleManager.begin()) {
+  if (!bleManager.begin(eePromConfig)) {
     //Show error image and stop
     matrix.showImage(IMG_ERROR);
     while(true);
@@ -231,9 +236,11 @@ void setup() {
   timerBlinkBle.start();
   //Start timer for soft motor command control
   timerMotorCommand.start();
+  //Start the distance sensor
+  distanceSensor.begin(eePromConfig);
 
   //Inizialize Servo Controller 
-  servoController.begin();
+  servoController.begin(eePromConfig);
 
   //Clear the matrix
   matrix.showImage(IMG_CLEAR);
@@ -242,6 +249,7 @@ void setup() {
 }
 
 void loop() {  
+  //Update timers
   matrix.update();
   buzzer.update();
   timerMain.update();
@@ -250,7 +258,7 @@ void loop() {
   servoController.update();
 
   if (!bleManager.getIsConnected() && !isUnsafeDistanceFront && !isUnsafeDistanceBack) {  
-    //Blink only if the dustance if safe, otherwise signal the danger
+    //Blink only not connected and safe distance
     timerBlinkBle.update();  
   }
 }

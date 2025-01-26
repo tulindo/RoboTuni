@@ -1,7 +1,8 @@
 #include "AutoDriveController.h"
 
-//Initialize static variables (otherwise linker will fail)
+//Initialize static variables
 AutoDriveController* AutoDriveController::instance = nullptr;
+bool AutoDriveController::isDebug = false;
 
 AutoDriveController::AutoDriveController(
     MotorsController* motorsController, 
@@ -115,12 +116,14 @@ void AutoDriveController::onTickLookSide(bool isRight) {
     //Calculate min/max distances
     float minDistance = distanceSensor->getMinDistance();
     float maxDistance = distanceSensor->getMaxDistance();
+
     SerialPrint("Calculated ");
     SerialPrint(isRight ? "Right" : "Left");
     SerialPrint(" Distance min: ");
     SerialPrint(minDistance);
     SerialPrint(" max: ");
     SerialPrintln(maxDistance);
+
     if (isRight) {
       minRightDistance = minDistance;
       maxRightDistance = maxDistance;
@@ -182,6 +185,7 @@ void AutoDriveController::onServoTargetReached(ServoTargetEnum target) {
   SerialPrint(") ServoState (");
   SerialPrint(enumToString(servoState));
   SerialPrint(") ");
+
   if (state == LookLeft || state == LookRight) {
     switch (target) {
       case LOOK_RIGHT:
@@ -202,22 +206,23 @@ void AutoDriveController::onServoTargetReached(ServoTargetEnum target) {
   }
 }
 
-void AutoDriveController::start() {
-    randomSeed(micros());
-    isEnabled = true;
-    //Start the timer
-    state = NormalDrive;
-    //Execute the tick
-    onTick();
+void AutoDriveController::start(EEPromConfiguration configuration) {
+  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugAutoDriveController;
+  randomSeed(micros());
+  isEnabled = true;
+  //Start the timer
+  state = NormalDrive;
+  //Execute the tick
+  onTick();
 }
 
 void AutoDriveController::stop() {
-    isEnabled = false;
-    timer.stop();
+  isEnabled = false;
+  timer.stop();
 }
 
 bool AutoDriveController::getIsEnabled() {
-    return isEnabled;
+  return isEnabled;
 }
 
 void AutoDriveController::update() {
