@@ -54,7 +54,7 @@ class ServoController {
     explicit ServoController(int servoPin, int timerDelay);
 
     //Initialize servo
-    void begin(EEPromConfiguration configuration);
+    void begin();
 
     //Set Servo mode
     void setMode(ServoTargetEnum target, bool oscillation = false);

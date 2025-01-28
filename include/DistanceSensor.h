@@ -44,7 +44,7 @@ class DistanceSensor {
     explicit DistanceSensor(int trigPin, int echoPin, int maxDistance);
 
     //Inizialize the sensor
-    void begin(EEPromConfiguration configuration);
+    void begin();
 
     //Get the calculated distance based on the last measures
     float getDistance();

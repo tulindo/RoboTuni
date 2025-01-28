@@ -16,8 +16,9 @@ bool BluetoothLEManager::getIsConnected() {
   return isConnected;
 }
 
-bool BluetoothLEManager::begin(EEPromConfiguration configuration) {
-  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugBluetoothLEManager;
+bool BluetoothLEManager::begin() {
+  EEPromConfiguration* config = EEPromConfiguration::getInstance();
+  isDebug = config->getSerialDebug() & SerialDebugEnum::DebugBluetoothLEManager;
 
   //Initialize BLE module
   if (!BLE.begin()) { 

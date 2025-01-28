@@ -2,7 +2,18 @@
 
 #include <EEPROM.h>
 
+//Initialize static variables
+EEPromConfiguration* EEPromConfiguration::instance = nullptr;
+
 EEPromConfiguration::EEPromConfiguration() {
+}
+
+EEPromConfiguration* EEPromConfiguration::getInstance() {
+  if (!instance) {
+    //Initialize once
+    instance = new EEPromConfiguration(); 
+  }
+  return instance;
 }
 
 void EEPromConfiguration::load() {

@@ -206,8 +206,9 @@ void AutoDriveController::onServoTargetReached(ServoTargetEnum target) {
   }
 }
 
-void AutoDriveController::start(EEPromConfiguration configuration) {
-  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugAutoDriveController;
+void AutoDriveController::start() {
+  EEPromConfiguration* config = EEPromConfiguration::getInstance();
+  isDebug = config->getSerialDebug() & SerialDebugEnum::DebugAutoDriveController;
   randomSeed(micros());
   isEnabled = true;
   //Start the timer

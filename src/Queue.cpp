@@ -23,8 +23,10 @@ bool Queue::enqueue(QueueData value, unsigned short occurrence) {
   return true;
 }
 
-void Queue::begin(EEPromConfiguration configuration) {
-  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugQueue;
+void Queue::begin() {
+  EEPromConfiguration* config = EEPromConfiguration::getInstance();
+
+  isDebug = config->getSerialDebug() & SerialDebugEnum::DebugQueue;
 
 }
 

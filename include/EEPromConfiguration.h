@@ -15,11 +15,15 @@ class EEPromConfiguration {
       byte maxMotorsSpeed = 150;
       byte driftingCorrection = 0;
       byte timingControlTick = 20;
-      byte serialDebug = 0;      
+      byte serialDebug = 16+8+1;      
     } eePromData;
-  public:
-    //Constructor
+
+    //Singleton implementation
+    static EEPromConfiguration* instance;
     explicit EEPromConfiguration();
+    
+  public:
+    static EEPromConfiguration* getInstance();
 
     //Load config from EEPROM
     void load();

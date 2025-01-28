@@ -53,8 +53,8 @@ class MotorsController {
       int pinForwardRight,
       int pinBacwardRight);
 
-    //Initialize speeds given the configuration
-    void begin(EEPromConfiguration configuration);
+    //Initialize speeds
+    void begin();
 
     //Emergency stop
     void emergencyStop();

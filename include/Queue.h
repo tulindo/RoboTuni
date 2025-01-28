@@ -35,7 +35,7 @@ class Queue {
     Queue();
 
     //Initialize debug stuff
-    void begin(EEPromConfiguration configuration);
+    void begin();
 
     //Add and element (or n copies of the element itself) to the queue
     bool enqueue(QueueData value, unsigned short occurrence = 1);

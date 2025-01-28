@@ -148,15 +148,16 @@ void MotorsController::setMotorsTargetSpeed(RobotCommandEnum command, short left
   targetRightMotorSpeed = rightSpeed;
 }
 
-void MotorsController::begin(EEPromConfiguration configuration) {
-  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugMotorsController;
+void MotorsController::begin() {
+  EEPromConfiguration* config = EEPromConfiguration::getInstance();
+  isDebug = config->getSerialDebug() & SerialDebugEnum::DebugMotorsController;
 
   //Inizialize also queue
-  queueSpeeds.begin(configuration);
+  queueSpeeds.begin();
 
   //Min And Max speed are read from configuration
-  minSpeed = (short)configuration.getMinMotorsSpeed();
-  maxSpeed = (short)configuration.getMaxMotorsSpeed();
+  minSpeed = (short)config->getMinMotorsSpeed();
+  maxSpeed = (short)config->getMaxMotorsSpeed();
   //SlowSpeed is used to forward turns. It's one third of the max speed .
   slowSpeed = minSpeed + (maxSpeed-minSpeed)/3;
   //Like a real car robot will go faster moving forward than backward.

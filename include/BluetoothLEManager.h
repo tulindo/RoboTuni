@@ -30,7 +30,7 @@ class BluetoothLEManager {
     BluetoothLEManager();
     bool getIsConnected();
     void update();
-    bool begin(EEPromConfiguration configuration);
+    bool begin();
     //Set the callback that will be called when a command is received
     void setOnCommandReceivedCallback(void (*callback)(RobotCommandEnum));
 };

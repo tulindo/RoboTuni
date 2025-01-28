@@ -13,8 +13,9 @@ ServoController::ServoController(int servoPin, int timerDelay) :
     targetReachingSteps = TARGET_REACHING_STEPS;
 }
 
-void ServoController::begin(EEPromConfiguration configuration) {
-  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugServoController;
+void ServoController::begin() {
+  EEPromConfiguration* config = EEPromConfiguration::getInstance();
+  isDebug = config->getSerialDebug() & SerialDebugEnum::DebugServoController;
 
   servoPosition = DEFAULT_SERVO_POSITION;
   targetPosition = DEFAULT_SERVO_POSITION;

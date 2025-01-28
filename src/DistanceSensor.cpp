@@ -122,6 +122,7 @@ float DistanceSensor::getMaxDistance() {
   return convertTimeToDistance(currentMaxPulseTime);
 }
 
-void DistanceSensor::begin(EEPromConfiguration configuration) {
-  isDebug = configuration.getSerialDebug() & SerialDebugEnum::DebugDistanceSensor;
+void DistanceSensor::begin() {
+  EEPromConfiguration* config = EEPromConfiguration::getInstance();
+  isDebug = config->getSerialDebug() & SerialDebugEnum::DebugDistanceSensor;
 }

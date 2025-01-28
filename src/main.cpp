@@ -5,9 +5,8 @@
 
 bool isDebug = false;
 
-//EEProm configuration object
+//EEProm configuration
 #include "EEPromConfiguration.h"
-EEPromConfiguration eePromConfig;
 
 //Matrix controller object
 #include "MatrixController.h"
@@ -103,7 +102,7 @@ void myCommandReceivedCallback(RobotCommandEnum command) {
     matrix.showCommand(command);
     if (command == AUTO_DRIVE) {
       //Start Automatic drive mode
-      autoDriveController.start(eePromConfig);
+      autoDriveController.start();
     } else {
       //Stop automatic drive mode if it was enabled
       if (autoDriveController.getIsEnabled()) {
@@ -201,16 +200,16 @@ void setup() {
   while (!Serial);
   SerialPrintln("Serial communication initialized");
 #endif 
-  isDebug = eePromConfig.getSerialDebug() & SerialDebugEnum::DebugMain;
+  isDebug = EEPromConfiguration::getInstance()->getSerialDebug() & SerialDebugEnum::DebugMain;
 
-  matrix.begin(eePromConfig);
+  matrix.begin();
   matrix.showImage(IMG_BATTERY_0);
 
   delay(1000);
 
   matrix.showImage(IMG_BATTERY_30);
   //Init configuration
-  motorsController.begin(eePromConfig);
+  motorsController.begin();
   delay(1000);
 
   matrix.showImage(IMG_BATTERY_60);
@@ -221,7 +220,7 @@ void setup() {
  
   delay(1000);
 
-  if (!bleManager.begin(eePromConfig)) {
+  if (!bleManager.begin()) {
     //Show error image and stop
     matrix.showImage(IMG_ERROR);
     while(true);
@@ -237,10 +236,10 @@ void setup() {
   //Start timer for soft motor command control
   timerMotorCommand.start();
   //Start the distance sensor
-  distanceSensor.begin(eePromConfig);
+  distanceSensor.begin();
 
   //Inizialize Servo Controller 
-  servoController.begin(eePromConfig);
+  servoController.begin();
 
   //Clear the matrix
   matrix.showImage(IMG_CLEAR);

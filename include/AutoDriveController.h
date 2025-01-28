@@ -52,7 +52,7 @@ class AutoDriveController {
     //Constructor
     explicit AutoDriveController(MotorsController* motorsController, ServoController* servoController, DistanceSensor* distanceSensor);
 
-    void start(EEPromConfiguration configuration);
+    void start();
 
     void stop();
 

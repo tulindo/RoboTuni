@@ -29,7 +29,7 @@ private:
 public:
   explicit MatrixController();        
 
-  void begin(EEPromConfiguration configuration);
+  void begin();
     
   void update();
   
