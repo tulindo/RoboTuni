@@ -1,8 +1,12 @@
 # ChangeLog
 
-0.1 - First version of the robot
+0.1 - First public version of the robot
 0.2 - Some improvements
 
 - SinglePin mode for HC-SR04
 - New AutoDrive RandomRotation recovery mode
 - New AutoDrive servoBased recovery mode
+  0.3 - More improvements
+- Removed Standard and Random recovery mode
+- Improved Serial debug with configuration
+- Singleon pattern for EEPromConfigutration class
